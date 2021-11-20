@@ -36,7 +36,7 @@ services:
       - source: elastic_config
         target: /usr/share/elasticsearch/config/elasticsearch.yml
     environment:
-      ES_JAVA_OPTS: "-Xmx8196m -Xms8196m"
+      ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
       ELASTIC_PASSWORD: demlfluaf
       discovery.type: single-node
     volumes:
@@ -44,9 +44,6 @@ services:
       - /data/elastic/logs:/usr/share/elasticsearch/logs
     networks:
       - elk
-    deploy:
-      mode: replicated
-      replicas: 1
     logging:
       driver: "json-file"
       options:
@@ -67,9 +64,6 @@ services:
       - elk
     depends_on:
       - elasticsearch
-    deploy:
-      mode: replicated
-      replicas: 1
     logging:
       driver: "json-file"
       options:
@@ -85,9 +79,6 @@ services:
       - traefik
     depends_on:
       - elasticsearch
-    deploy:
-      mode: replicated
-      replicas: 1
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.kibana.rule=Host(`log.it.scancity.ru`)"
@@ -109,10 +100,7 @@ services:
       COMMAND: /usr/share/curator/config/delete_log_files_curator.yml
       UNIT_COUNT: 2
     networks:
-      - elk
-    deploy:
-      mode: replicated
-      replicas: 1      
+      - elk   
     logging:
       driver: "json-file"
       options:
