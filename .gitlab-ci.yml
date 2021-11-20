@@ -13,7 +13,7 @@ build_curator:
   script:
     - cd ${PROJECT_NAME}
     - docker build --no-cache --pull -t ${CI_REGISTRY_IMAGE}/curator:${CI_PIPELINE_ID} .
-    - docker pull ${CI_REGISTRY_IMAGE}/curator:${CI_PIPELINE_ID}
+    - docker push ${CI_REGISTRY_IMAGE}/curator:${CI_PIPELINE_ID}
     - docker rmi ${CI_REGISTRY_IMAGE}/curator:${CI_PIPELINE_ID} || true
   tags:
   - runner-docker
