@@ -4,7 +4,7 @@ services:
   traefik:
     image: "traefik:v2.2"
     networks:
-      - traefik
+      - elk
     command:
       - "--log.level=DEBUG"
       - "--api.insecure=true"
@@ -39,7 +39,7 @@ services:
         max-size: "5m"
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.2
     configs:
       - source: elastic_config
         target: /usr/share/elasticsearch/config/elasticsearch.yml
@@ -66,7 +66,7 @@ services:
         max-size: "5m"
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.14.1
+    image: docker.elastic.co/logstash/logstash:7.14.2
     configs:
       - source: logstash_config
         target: /usr/share/logstash/config/logstash.yml
@@ -92,7 +92,7 @@ services:
         max-size: "5m"
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.14.1
+    image: docker.elastic.co/kibana/kibana:7.14.2
     configs:
       - source: kibana_config
         target: /usr/share/kibana/config/kibana.yml
@@ -100,7 +100,6 @@ services:
       - 5601:5601
     networks:
       - elk
-      - traefik
     deploy:
       mode: replicated
       replicas: 1
@@ -115,7 +114,7 @@ services:
         - "traefik.http.services.kibana.loadbalancer.server.port=5601"
         - "traefik.http.routers.kibana.entrypoints=websecure"
         - "traefik.http.routers.kibana.tls.certresolver=myresolver"
-        - "traefik.docker.network=traefik"
+        - "traefik.docker.network=elk"
     logging:
       driver: "json-file"
       options:
@@ -156,4 +155,3 @@ configs:
 
 networks:
   elk:
-  traefik:
