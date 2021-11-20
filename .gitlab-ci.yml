@@ -18,7 +18,7 @@ build_curator:
   tags:
   - runner-docker
   only:
-    - main
+    - master
 
 deploy:
   stage: deploy
@@ -44,4 +44,4 @@ deploy:
   tags:
   - runner-docker
   only:
-    - main
+    - master
