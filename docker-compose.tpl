@@ -96,6 +96,8 @@ services:
     configs:
       - source: kibana_config
         target: /usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
     networks:
       - elk
       - traefik
