@@ -3,8 +3,6 @@ services:
 
   traefik:
     image: "traefik:v2.2"
-    networks:
-      - elk
     command:
       - "--log.level=DEBUG"
       - "--api.insecure=true"
@@ -18,6 +16,8 @@ services:
       - "--certificatesresolvers.myresolver.acme.email=admin@scancity.ru"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--accesslog=true"
+    networks:
+      - elk
     ports:
       - "80:80"
       - "8080:8080"
@@ -155,3 +155,5 @@ configs:
 
 networks:
   elk:
+    driver: overlay
+    external: true
