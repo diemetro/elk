@@ -18,7 +18,6 @@ services:
       - "--certificatesresolvers.myresolver.acme.email=admin@scancity.ru"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--accesslog=true"
-      - "--accesslog.filters.minduration=1s"
     ports:
       - "80:80"
       - "8080:8080"
@@ -37,7 +36,7 @@ services:
       - source: elastic_config
         target: /usr/share/elasticsearch/config/elasticsearch.yml
     environment:
-      ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
+      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
       ELASTIC_PASSWORD: demlfluaf
       discovery.type: single-node
     volumes:
