@@ -25,6 +25,14 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/etc/letsencrypt:/letsencrypt"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 5
+        window: 10s
     logging:
       driver: "json-file"
       options:
@@ -44,6 +52,14 @@ services:
       - /data/elastic/logs:/usr/share/elasticsearch/logs
     networks:
       - elk
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 5
+        window: 10s
     logging:
       driver: "json-file"
       options:
@@ -62,8 +78,14 @@ services:
       - 12202:12202/udp
     networks:
       - elk
-    depends_on:
-      - elasticsearch
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 5
+        window: 10s
     logging:
       driver: "json-file"
       options:
@@ -77,15 +99,21 @@ services:
     networks:
       - elk
       - traefik
-    depends_on:
-      - elasticsearch
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.kibana.rule=Host(`log.it.scancity.ru`)"
-      - "traefik.http.services.kibana.loadbalancer.server.port=5601"
-      - "traefik.http.routers.kibana.entrypoints=websecure"
-      - "traefik.http.routers.kibana.tls.certresolver=myresolver"
-      - "traefik.docker.network=traefik"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 5
+        window: 10s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.kibana.rule=Host(`log.it.scancity.ru`)"
+        - "traefik.http.services.kibana.loadbalancer.server.port=5601"
+        - "traefik.http.routers.kibana.entrypoints=websecure"
+        - "traefik.http.routers.kibana.tls.certresolver=myresolver"
+        - "traefik.docker.network=traefik"
     logging:
       driver: "json-file"
       options:
@@ -100,7 +128,15 @@ services:
       COMMAND: /usr/share/curator/config/delete_log_files_curator.yml
       UNIT_COUNT: 2
     networks:
-      - elk   
+      - elk
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 5
+        window: 10s
     logging:
       driver: "json-file"
       options:
