@@ -38,7 +38,7 @@ deploy:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh -p ${SSH_PORT} -o stricthostkeychecking=no ${SSH_URL} "mkdir -p ${DEPLOY_DIR}/"
-    - scp -P ${SSH_PORT} -r ./ ${SSH_URL}:${DEPLOY_DIR}/
+    - scp -P ${SSH_PORT} -r ./* ${SSH_URL}:${DEPLOY_DIR}/
     - ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no -o PubkeyAuthentication=yes ${SSH_URL} DEPLOY_DIR=${DEPLOY_DIR} CI_REGISTRY_USER=${CI_REGISTRY_USER} CI_JOB_TOKEN=${CI_JOB_TOKEN} CI_REGISTRY=${CI_REGISTRY} CI_REGISTRY_IMAGE=${CI_REGISTRY_IMAGE} CI_PIPELINE_ID=${CI_PIPELINE_ID} 'bash -s' < ./deploy.sh
   when: manual
   tags:
